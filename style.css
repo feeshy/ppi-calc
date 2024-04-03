@@ -1,0 +1,58 @@
+body {
+	background-color: #fcfcfc;
+	padding: 5vh;
+}
+header, footer {
+	text-align: right;
+}
+section {
+	margin: 0 auto;
+	width: 20em;
+	max-width: 85vw;
+}
+
+input {
+	width: 4em;
+	background-color: #ffffff;
+	border: solid 1px #cccccc;
+	text-align: right;
+	font-family: monospace;
+}
+input:focus, input:hover {
+	background-color:#eeeeee;
+}
+hr {
+	width: 50%;
+	border: thin dashed;
+    margin: calc(1.2em + 1.5vh) auto;
+	border-color: RGBA(127,127,127,0.25);
+}
+#recommend {
+	overflow: auto;
+}
+img {
+	display: block;
+	margin: auto;
+	max-width: 95%
+}
+table {
+	margin: auto;
+	max-width: 95%;
+    text-align: center;
+	vertical-align: middle;
+	border-style: solid hidden;
+	border-color: #000000;
+	border-spacing: 0;
+}
+th, td {
+	line-height: 1.25em;
+	padding: 0.25em 0.5em;
+	font-family: monospace;
+}
+
+tr:nth-child(odd) {
+	background-color: #cccccc;
+}
+tr:nth-child(even) {
+	background-color: #fcfcfc;
+}

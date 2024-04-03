@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>PPI 计算器</title>
+    <meta name="keywords" content="PPI, 缩放, HiDPI, 高分屏">
+    <meta name="description" property="og:description" content="一个更加智能的PPI计算器。输入屏幕尺寸即可计算当前屏幕的长度和宽度，并获得高分屏的缩放建议">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- the icon is made by Freepik -->
+    <!-- https://www.flaticon.com/authors/freepik -->
+    <link rel="apple-touch-icon" sizes="180x180" href="logo-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logo-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="ppi-calc.js" async></script>
+</head>
+
+<body>
+    <header><a href="https://github.com/feeshy/ppi-calc" target="_blank">source code</a></header>
+    <section id="input">
+        <p>屏幕宽度：<input id="pixelW" type="number" min="0" step="1" value=""> 像素<span id="cmW"></span></p>
+        <p>屏幕高度：<input id="pixelH" type="number" min="0" step="1" value=""> 像素<span id="cmH"></span></p>
+        <p>对角长度：<input id="inchD" type="number" min="0" step="0.1" value=""> 英寸<span id="cmD"></span></p>
+        <p><input type="checkbox" id="isPenTile">PenTile 排列</p>    
+    </section>
+    <section id="result" style="display:none;">
+        <hr>
+        <p style="text-align:center; font-size:larger"><b id="ppi"></b><span id="tooLow"></span></p>
+        <section id="recommend" style="display:none;">
+            <p>系统缩放建议<p>
+            <table>
+                <tr>
+                    <th></th>
+                    <th class="thisDevice" style="display:none;">当前</th>
+                    <th>更大字号</th>
+                    <th>更多内容</th>
+                </tr>
+                <tr>
+                    <td>缩放比例</td>
+                    <td id="scaleFac" class="thisDevice" style="display:none;">___%</td>
+                    <td id="scaleFacLgr">___%</td>
+                    <td id="scaleFacMore">___%</td>
+                </tr>
+                    <tr>
+                    <td style="font-size:0.8em;">CSS分辨率</td>
+                    <td id="res" class="thisDevice" style="display:none;">____×____</td>
+                    <td id="resLgr">____×____</td>
+                    <td id="resMore">____×____</td>
+                </tr>
+            </table>
+        </section>
+    </section>
+    <section class="thisDevice" style="display:none;">
+        <!-- <p>当前缩放比例：<span id="scaleFac">____x____</span></p>
+        <p>当前CSS分辨率：<span id="res">____x____</span></p> -->
+        <section id="officeScale" style="display: none;">
+            <p>Office缩放建议</p>
+            <img src="officeScale.png" alt="screenshot" loading="lazy">
+            <p>当前系统缩放比例下，将MS Office右下角的缩放比设置为<span id="officeScaleFac">___%</span>，即可使屏幕上的文稿显示为与打印文稿相同的尺寸</p>
+        </section>
+    </section>
+</body>
+
+</html>
