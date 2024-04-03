@@ -7,14 +7,13 @@ const
   CACHE = version + '::PWAsite',
   offlineURL = '/',
   installFilesEssential = [
+    'index.html',
     'manifest.json',
-    'ppi-calc.js',
-    'style.css',
-    'logo-16x16.png'
+    'service-worker.js',
+    'ppi-calc.js'
 ].concat(offlineURL),
   installFilesDesirable = [
-    'logo.png',
-    'logo-512x512.png',
+    'style.css',
     'officeScale.png'
   ];
 
