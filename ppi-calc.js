@@ -111,7 +111,7 @@ function calc() {
         var isThisDevice = Math.abs(pixelW - Math.round(window.screen.width * window.devicePixelRatio)) + Math.abs(pixelH - Math.round(window.screen.height * window.devicePixelRatio))             // this will allow deviations
         if (  isThisDevice <= 2 ) {
 
-            document.getElementById("scaleFac").textContent = window.devicePixelRatio * 100 + "%"
+            document.getElementById("scaleFac").textContent = Math.round(window.devicePixelRatio * 100) + "%"
             document.getElementById("res").textContent = window.screen.width + "×" + window.screen.height
 
             const elements = document.getElementsByClassName("thisDevice");

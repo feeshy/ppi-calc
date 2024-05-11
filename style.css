@@ -1,58 +1,71 @@
+html { color-scheme: light dark; }
+
 body {
-	background-color: #fcfcfc;
-	padding: 5vh;
+	padding: 5vh 5vw;
+	overflow-wrap: break-word;
 }
-header, footer {
-	text-align: right;
-}
+
 section {
 	margin: 0 auto;
-	width: 20em;
-	max-width: 85vw;
+	width: 18em;
+	max-width: 100%;
 }
+
+header, footer { text-align: right; }
+p { text-align: justify; }
+#input p { text-align: left; }
+span { display: inline-block; }
 
 input {
 	width: 4em;
-	background-color: #ffffff;
-	border: solid 1px #cccccc;
 	text-align: right;
 	font-family: monospace;
 }
+
 input:focus, input:hover {
 	background-color:#eeeeee;
 }
+
 hr {
 	width: 50%;
 	border: thin dashed;
     margin: calc(1.2em + 1.5vh) auto;
 	border-color: RGBA(127,127,127,0.25);
 }
-#recommend {
-	overflow: auto;
-}
-img {
-	display: block;
-	margin: auto;
-	max-width: 95%
-}
+
+.wrapper { overflow: auto; }
+
 table {
 	margin: auto;
-	max-width: 95%;
-    text-align: center;
+	width: max-content;
+	text-align: center;
 	vertical-align: middle;
 	border-style: solid hidden;
-	border-color: #000000;
 	border-spacing: 0;
 }
+
+tr { border-width: thin; }
+
 th, td {
 	line-height: 1.25em;
 	padding: 0.25em 0.5em;
 	font-family: monospace;
 }
 
-tr:nth-child(odd) {
-	background-color: #cccccc;
+img {
+	display: block;
+	margin: auto;
+	max-width: 100%;
+	min-width: 260px;
 }
-tr:nth-child(even) {
-	background-color: #fcfcfc;
+
+@media (prefers-color-scheme: light) {
+	table { border-color: black; }
+	tr { border-color: lightgray; }
+}
+
+@media (prefers-color-scheme: dark) {
+	table { border-color: white; }
+	tr { border-color: darkgray; }
+	img { filter:invert(1); }
 }
