@@ -3,17 +3,17 @@
 
   // configuration
 const
-  version = '2024.4.03',
+  version = '2024.5.11',
   CACHE = version + '::PWAsite',
-  offlineURL = '/',
+  offlineURL = 'https://feeshy.github.io/ingress-calc/',
   installFilesEssential = [
     'index.html',
     'manifest.json',
     'service-worker.js',
-    'ppi-calc.js'
+    'ppi-calc.js',
+    'style.css'
 ].concat(offlineURL),
   installFilesDesirable = [
-    'style.css',
     'officeScale.png'
   ];
 
