@@ -1,71 +1,187 @@
-html { color-scheme: light dark; }
-
-body {
-	padding: 5vh 5vw;
-	overflow-wrap: break-word;
-}
-
-section {
-	margin: 0 auto;
-	width: 18em;
-	max-width: 100%;
-}
-
-header, footer { text-align: right; }
-p { text-align: justify; }
-#input p { text-align: left; }
-span { display: inline-block; }
-
-input {
-	width: 4em;
-	text-align: right;
-	font-family: monospace;
-}
-
-input:focus, input:hover {
-	background-color:#eeeeee;
-}
-
-hr {
-	width: 50%;
-	border: thin dashed;
-    margin: calc(1.2em + 1.5vh) auto;
-	border-color: RGBA(127,127,127,0.25);
-}
-
-.wrapper { overflow: auto; }
-
-table {
-	margin: auto;
-	width: max-content;
-	text-align: center;
-	vertical-align: middle;
-	border-style: solid hidden;
-	border-spacing: 0;
-}
-
-tr { border-width: thin; }
-
-th, td {
-	line-height: 1.25em;
-	padding: 0.25em 0.5em;
-	font-family: monospace;
-}
-
-img {
-	display: block;
-	margin: auto;
-	max-width: 100%;
-	min-width: 260px;
-}
-
-@media (prefers-color-scheme: light) {
-	table { border-color: black; }
-	tr { border-color: lightgray; }
+:root {
+	--bg-color: #f5f5f7;
+	--card-bg: #ffffff;
+	--text-main: #1d1d1f;
+	--text-sec: #86868b;
+	--accent: #0066cc;
+	--border: #d2d2d7;
+	--radius: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
-	table { border-color: white; }
-	tr { border-color: darkgray; }
-	img { filter:invert(1); }
+	:root {
+		--bg-color: #000000;
+		--card-bg: #1c1c1e;
+		--text-main: #f5f5f7;
+		--text-sec: #a1a1a6;
+		--accent: #007aff;
+		--border: #38383a;
+	}
+}
+
+* {
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	background-color: var(--bg-color);
+	color: var(--text-main);
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px 20px;
+	min-height: 100vh;
+}
+
+.container {
+	width: 100%;
+	max-width: 400px;
+}
+
+header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+}
+
+h1 {
+	font-size: 1.5rem;
+	margin: 0;
+	font-weight: 600;
+}
+
+h1 img {
+	height: 1em;
+	vertical-align: -0.12em;
+	margin-right: 0.2em;
+}
+
+.source-link {
+	color: var(--text-sec);
+	text-decoration: none;
+	font-size: 0.85rem;
+}
+
+.card {
+	background: var(--card-bg);
+	border-radius: var(--radius);
+	padding: 24px;
+	margin-bottom: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.input-group {
+	margin-bottom: 16px;
+}
+
+label {
+	display: block;
+	font-size: 0.9rem;
+	color: var(--text-sec);
+	margin-bottom: 6px;
+}
+
+.input-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+input[type="number"] {
+	flex: 1;
+	padding: 10px 14px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: transparent;
+	color: var(--text-main);
+	font-size: 1rem;
+	outline: none;
+}
+
+input:focus {
+	border-color: var(--accent);
+}
+
+.cm-hint {
+	font-size: 0.8rem;
+	color: var(--text-sec);
+	white-space: nowrap;
+}
+
+.checkbox-group {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.9rem;
+	margin-top: 10px;
+}
+
+#result {
+	text-align: center;
+}
+
+#ppi {
+	font-size: 2.4rem;
+	font-weight: 700;
+	color: var(--accent);
+	margin: 0;
+}
+
+#tooLow {
+	color: #ff3b30;
+	font-size: 0.9rem;
+	margin-top: 8px;
+	line-height: 1.4;
+}
+
+.table-wrapper {
+	overflow-x: auto;
+	margin: 16px -8px 0;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.85rem;
+	text-align: center;
+}
+
+th {
+	color: var(--text-sec);
+	font-weight: normal;
+	padding: 8px;
+}
+
+td {
+	padding: 12px 8px;
+	border-top: 1px solid var(--border);
+}
+
+#officeScale {
+	margin-top: 24px;
+	font-size: 0.85rem;
+	border-top: 1px dashed var(--border);
+	padding-top: 20px;
+}
+
+#officeScale img {
+	width: 100%;
+	border-radius: 6px;
+	margin-bottom: 12px;
+	filter: grayscale(1) opacity(0.8);
+}
+
+@media (prefers-color-scheme: dark) {
+	#officeScale img {
+		filter: invert(1) opacity(0.6);
+	}
+}
+
+.hidden {
+	display: none !important;
 }
