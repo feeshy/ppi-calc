@@ -22,7 +22,7 @@ function calc() {
             document.getElementById("ppi").textContent = Math.round(ppi) + "PPI"
         } else {
             equivPPI = ppi * Math.sqrt(2 / 3)
-            document.getElementById("ppi").innerHTML = Math.round(equivPPI) + "PPI" + "<small style="font-size:1rem; font-weight:normal; color:var(--text-sec)">${lang.penTileHint}</small>"
+            document.getElementById("ppi").innerHTML = Math.round(equivPPI) + "PPI" + `<small style="font-size:1rem; font-weight:normal; color:var(--text-sec)">${lang.penTileHint}</small>`
         }
         document.getElementById("result-card").classList.remove("hidden")
 
