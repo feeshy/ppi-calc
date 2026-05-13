@@ -2,9 +2,11 @@
 const i18n = {
   zh: {
     title: "PPI 计算器",
-    labelW: "屏幕宽度 (像素)",
-    labelH: "屏幕高度 (像素)",
-    labelD: "对角长度 (英寸)",
+    labelW: "屏幕宽度",
+    labelH: "屏幕高度",
+    labelD: "对角长度",
+    pixel: "像素",
+    inch: "英寸",
     labelPenTile: "PenTile 排列",
     suggestTitle: "系统缩放建议",
     thCurrent: "当前",
@@ -13,17 +15,18 @@ const i18n = {
     tdRatio: "比例",
     tdRes: "CSS分辨率",
     officeTitle: "Office 缩放建议",
-    officeDesc: (fac) => `当前系统缩放比例下，将 MS Office 右下角设为 <b style="color:var(--accent)">${fac}</b>，即可实现 1:1 打印预览。`,
-    unitCm: (val) => `（${val} 厘米）`,
-    penTileHint: "(PenTile等效)",
+    officeDesc: (fac) => `当前系统缩放比例下，将 MS Office 缩放设为 <b style="color:var(--accent)">${fac}</b>，即可实现 1:1 打印预览。`,
+    penTileHint: "等效",
     warnDistance: "建议拉远距离观看",
     warnUpgrade: "建议升级高分屏"
   },
   en: {
     title: "PPI Calculator",
-    labelW: "Screen Width (px)",
-    labelH: "Screen Height (px)",
-    labelD: "Diagonal (inch)",
+    labelW: "Width",
+    labelH: "Height",
+    labelD: "Diagonal",
+    pixel: "pixels",
+    inch: "inches",
     labelPenTile: "PenTile Layout",
     suggestTitle: "Scaling Suggestions",
     thCurrent: "Current",
@@ -32,9 +35,8 @@ const i18n = {
     tdRatio: "Scale",
     tdRes: "Resolution",
     officeTitle: "Office Scaling",
-    officeDesc: (fac) => `Set MS Office zoom to <b style="color:var(--accent)">${fac}</b> for 1:1 print preview at current system scale.`,
-    unitCm: (val) => `(${val} cm)`,
-    penTileHint: "(PenTile Equiv.)",
+    officeDesc: (fac) => `Zoom MS Office to <b style="color:var(--accent)">${fac}</b> for 1:1 print preview at current system scale.`,
+    penTileHint: "Equiv.",
     warnDistance: "Increase viewing distance",
     warnUpgrade: "Upgrade to High-DPI screen"
   }
@@ -48,6 +50,9 @@ function applyI18n() {
   document.getElementById("i18n-label-w").textContent = lang.labelW;
   document.getElementById("i18n-label-h").textContent = lang.labelH;
   document.getElementById("i18n-label-d").textContent = lang.labelD;
+  document.getElementById("i18n-pixel-w").textContent = lang.pixel;
+  document.getElementById("i18n-pixel-h").textContent = lang.pixel;
+  document.getElementById("i18n-inch-d").textContent = lang.inch;
   document.getElementById("i18n-label-pentile").textContent = lang.labelPenTile;
   document.getElementById("i18n-suggest-title").textContent = lang.suggestTitle;
   document.getElementById("i18n-th-current").textContent = lang.thCurrent;

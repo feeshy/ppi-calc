@@ -14,15 +14,15 @@ function calc() {
         scaledPPI = Math.sqrt(Math.pow(window.screen.width, 2) + Math.pow(window.screen.height, 2)) / inchD
         mmW = pixelW / ppi * 25.4
         mmH = pixelH / ppi * 25.4
-        document.getElementById("cmW").textContent = lang.unitCm(Math.round(mmW) / 10)
-        document.getElementById("cmH").textContent = lang.unitCm(Math.round(mmH) / 10)
-        document.getElementById("cmD").textContent = lang.unitCm(Math.round(inchD * 25.4) / 10)
+        document.getElementById("cmW").textContent = Math.round(mmW) / 10 + " cm"
+        document.getElementById("cmH").textContent = Math.round(mmH) / 10 + " cm"
+        document.getElementById("cmD").textContent = Math.round(inchD * 25.4) / 10 + " cm"
 
         if (document.getElementById("isPenTile").checked == false) {
-            document.getElementById("ppi").textContent = "PPI=" + Math.round(ppi)
+            document.getElementById("ppi").textContent = Math.round(ppi) + "PPI"
         } else {
             equivPPI = ppi * Math.sqrt(2 / 3)
-            document.getElementById("ppi").innerHTML = "PPI=" + Math.round(equivPPI) + ` <small style="font-size:1rem; font-weight:normal; color:var(--text-sec)">${lang.penTileHint}</small>`
+            document.getElementById("ppi").innerHTML = Math.round(equivPPI) + "PPI" + "<small style="font-size:1rem; font-weight:normal; color:var(--text-sec)">${lang.penTileHint}</small>"
         }
         document.getElementById("result-card").classList.remove("hidden")
 
