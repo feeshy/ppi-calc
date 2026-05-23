@@ -3,7 +3,7 @@
 
 // configuration
 const
-  version = '2026.5.13',
+  version = '2026.5.23',
   CACHE = version + '::PWAsite',
   offlineURL = 'https://feeshy.github.io/ppi-calc/',
   installFilesEssential = [
@@ -15,7 +15,7 @@ const
     'style.css'
   ].concat(offlineURL),
   installFilesDesirable = [
-    'assets/officeScale.png'
+    'officeScale.png'
   ];
 
 ///////////////////////////////////

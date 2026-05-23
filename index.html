@@ -10,11 +10,7 @@
     <meta name="description" id="i18n-desc" property="og:description" content="一个更加智能的PPI计算器。自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度并提供高分屏缩放比例建议，支持PWA离线运行">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- the icon is made by Freepik -->
-    <!-- https://www.flaticon.com/authors/freepik -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/logo-180x180.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/logo-16x16.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
@@ -24,7 +20,8 @@
 <body>
     <div class="container">
         <header>
-            <h1><img src="assets/logo.png"><span id="i18n-header">PPI 计算器</span></h1>
+            <a href="/" class="source-link">home</a>
+            <h1><object type="image/svg+xml" data="favicon.svg" style="height: 1.5em; vertical-align:middle;"></object><span id="i18n-header">PPI 计算器</span></h1>
             <a href="https://github.com/feeshy/ppi-calc" class="source-link" target="_blank">source code</a>
         </header>
 
@@ -104,7 +101,7 @@
             <!-- Office 打印缩放建议 -->
             <div id="officeScale" class="hidden">
                 <p id="i18n-office-title" class="section-title">Office 缩放建议</p>
-                <img src="assets/officeScale.png" loading="lazy" alt="screenshot" onerror="this.style.display='none'">
+                <img src="officeScale.png" loading="lazy" alt="screenshot" onerror="this.style.display='none'">
                 <p id="i18n-office-desc" style="color:var(--text-sec); margin:0;"></p>
             </div>
         </section>
