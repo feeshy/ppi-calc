@@ -1,10 +1,5 @@
-/**
- * 子站原生 PWA Service Worker
- * 自动版本控制：GitHub Actions 会在构建时自动替换 BUILD_TIME_PLACEHOLDER
- */
-
 const VERSION = 'BUILD_TIME_PLACEHOLDER';
-const CACHE_NAME = 'sub-site-cache-v' + VERSION;
+const CACHE_NAME = 'ppi-calc-v' + VERSION;
 
 // 安卓 Chrome 安装检测点
 const ESSENTIAL_FILES = [
