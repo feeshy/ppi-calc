@@ -1,93 +1,59 @@
-// Thank CaelumTian for translating the following tutorial:
-// https://caelumtian.github.io/2017/08/23/%E8%AF%91-%E5%B0%86%E4%BD%A0%E7%9A%84%E7%BD%91%E7%AB%99%E5%8D%87%E7%BA%A7%E4%B8%BAPWA/#%E6%AD%A5%E9%AA%A43%EF%BC%9A%E5%88%9B%E5%BB%BAService-Worker
+/**
+ * 子站原生 PWA Service Worker
+ * 自动版本控制：GitHub Actions 会在构建时自动替换 BUILD_TIME_PLACEHOLDER
+ */
 
-// configuration
-const
-  version = '2026.5.23',
-  CACHE = version + '::PWAsite',
-  offlineURL = 'https://feeshy.github.io/ppi-calc/',
-  installFilesEssential = [
-    'index.html',
-    'manifest.json',
-    'service-worker.js',
-    'app.js',
-    'ppi-calc.js',
-    'style.css'
-  ].concat(offlineURL),
-  installFilesDesirable = [
-    'officeScale.png'
-  ];
+const VERSION = 'BUILD_TIME_PLACEHOLDER';
+const CACHE_NAME = 'sub-site-cache-v' + VERSION;
 
-///////////////////////////////////
-// install static assets
-function installStaticFiles() {
-  return caches.open(CACHE)
-    .then(cache => {
-      // cache desirable files
-      cache.addAll(installFilesDesirable);
-      // cache essential files
-      return cache.addAll(installFilesEssential);
-    });
-}
+// 安卓 Chrome 安装检测点
+const ESSENTIAL_FILES = [
+  './',
+  './index.html',
+  './manifest.json',
+  './style.css'
+];
 
-// application installation
-self.addEventListener('install', event => {
-  console.log('service worker: install');
-  // cache core files
+// 1. 安装阶段
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    installStaticFiles()
-      .then(() => self.skipWaiting())
-  );
-});
-
-/////////////////////////////
-// clear old caches
-function clearOldCaches() {
-  return caches.keys()
-    .then(keylist => {
+    caches.open(CACHE_NAME).then((cache) => {
       return Promise.all(
-        keylist
-          .filter(key => key !== CACHE)
-          .map(key => caches.delete(key))
+        ESSENTIAL_FILES.map((url) =>
+          cache.add(url).catch((err) => console.warn('Precache failed for:', url, err))
+        )
       );
-    });
-}
-// application activated
-self.addEventListener('activate', event => {
-  console.log('service worker: activate');
-  // delete old caches
-  event.waitUntil(
-    clearOldCaches()
-      .then(() => self.clients.claim())
+    }).then(() => self.skipWaiting())
   );
 });
 
-///////////////////////////////
-// application fetch network data
-self.addEventListener('fetch', event => {
-  // abandon non-GET requests
+// 2. 激活阶段：清理旧版本缓存
+// 每次构建产生的不同版本号会触发此事件，确保旧缓存被彻底删除
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// 3. 运行时策略：StaleWhileRevalidate (缓存优先，后台同步更新)
+self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  let url = event.request.url;
+  if (!event.request.url.startsWith(self.location.origin)) return;
+
   event.respondWith(
-    caches.open(CACHE)
-      .then(cache => {
-        return cache.match(event.request)
-          .then(response => {
-            if (response) {
-              // return cached file
-              console.log('cache fetch: ' + url);
-              return response;
-            }
-            // make network request
-            return fetch(event.request)
-              .then(newreq => {
-                console.log('network fetch: ' + url);
-                if (newreq.ok) cache.put(event.request, newreq.clone());
-                return newreq;
-              })
-              // app is offline
-              .catch(() => offlineAsset(url));
-          });
-      })
+    caches.open(CACHE_NAME).then(async (cache) => {
+      const fetchPromise = fetch(event.request).then((networkResponse) => {
+        cache.put(event.request, networkResponse.clone());
+        return networkResponse;
+      }).catch(() => { });
+
+      const cachedResponse = await cache.match(event.request);
+
+      return cachedResponse || fetchPromise;
+    })
   );
 });
