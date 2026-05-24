@@ -15,7 +15,8 @@
             "purpose": "maskable"
         }
     ],
-    "start_url": "https://feeshy.github.io/ppi-calc",
+    "scope" : "/ppi-calc/",   
+    "start_url": "/ppi-calc/",
     "theme_color": "#fcfcfc",
     "background_color": "#fcfcfc",
     "display": "standalone"
