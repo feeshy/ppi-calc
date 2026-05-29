@@ -15,8 +15,7 @@
             "purpose": "maskable"
         }
     ],
-    "scope" : "/ppi-calc/",   
-    "start_url": "/ppi-calc/",
+    "start_url": "/",
     "theme_color": "#fcfcfc",
     "background_color": "#fcfcfc",
     "display": "standalone"
