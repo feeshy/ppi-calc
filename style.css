@@ -8,6 +8,7 @@
 	--border: #d2d2d7;
 	--radius: 12px;
 	--mono-font: "JetBrains Mono", "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
+	--condensed-font: "Bahnschrift", -apple-system, BlinkMacSystemFont, sans-serif-condensed, "HarmonyOS Sans Condensed", "Roboto Condensed", "Ubuntu Sans Condensed", "Ubuntu Condensed", "Inconsolata", "Ubuntu Mono", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,27 +36,59 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 40px 20px;
+	padding: 0 20px;
 	min-height: 100vh;
 }
 
 .container {
 	width: 100%;
-	max-width: 400px;
+	max-width: 360px;
+	margin-top: 24px;
+	margin-bottom: 24px;
+}
+
+header,
+footer {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: calc(100% - 40px);
+	max-width: 360px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 10;
+}
+
+@media screen and (max-height: 879px) {
+	footer {
+		display: none;
+	}
+}
+
+@media screen and (min-height: 880px) {
+	footer {
+		display: flex;
+	}
 }
 
 header {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 24px;
+	top: 24px;
+}
+
+footer {
+	bottom: 24px;
 }
 
 h1 {
 	font-size: 1.5rem;
 	margin: 0;
 	font-weight: 600;
+	margin-bottom: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 h1 img {
@@ -65,7 +98,7 @@ h1 img {
 }
 
 .source-link {
-	color: var(--text-sec);
+	color: var(--text-light);
 	text-decoration: none;
 	font-size: 0.85rem;
 }
@@ -78,7 +111,6 @@ h1 img {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* 输入区域优化 */
 .input-group {
 	display: flex;
 	justify-content: space-between;
@@ -176,6 +208,7 @@ input:focus {
 
 table {
 	width: 100%;
+	min-width: 300px;
 	border-collapse: collapse;
 	font-size: 0.85rem;
 	text-align: center;
@@ -190,7 +223,8 @@ th {
 td {
 	padding: 12px 8px;
 	border-top: 1px solid var(--border);
-	font-family: var(--mono-font);
+	font-family: var(--condensed-font);
+	font-stretch: condensed;
 }
 
 #officeScale {

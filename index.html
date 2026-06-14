@@ -4,58 +4,81 @@
 <head>
     <meta charset=utf-8>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title id="i18n-title">PPI计算器</title>
-    <meta property="og:title" content="PPI计算器 (PWA)" />
-    <meta name="keywords" content="PPI, 像素密度, 分辨率, 缩放, HiDPI, 高分屏, PWA">
-    <meta name="description" id="i18n-desc" property="og:description" content="一个更加智能的PPI计算器。自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度并提供高分屏缩放比例建议，支持PWA离线运行">
+    <script>
+        (function () {
+            if (location.search.indexOf('lang=zh') !== -1) return;
+            if (!navigator.language.startsWith('zh')) {
+                location.href = './en';
+            }
+        })();
+    </script>
+    <title>PPI计算器 - 像素密度与缩放建议</title>
+    <meta property="og:title" content="在线PPI计算器" />
+    <meta name="keywords" content="PPI, 像素密度, 在线PPI计算器, PPI计算公式, 屏幕分辨率, 缩放, HiDPI, 高分屏, PWA">
+    <meta name="description" property="og:description" content="在线PPI计算器：自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度(PPI)。提供HiDPI/PenTile等效换算和系统缩放建议，支持PWA离线运行。">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="canonical" href="https://ppi.feeshy.top/" />
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
     <script src="ppi-calc.js" defer></script>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PPI计算器",
+        "url": "https://ppi.feeshy.top/",
+        "description": "在线PPI计算器，自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度并提供高分屏缩放比例建议",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript",
+        "offers": { "@type": "Offer", "price": "0" }
+    }
+    </script>
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <a href="https://feeshy.top" class="source-link">home</a>
-            <h1><object type="image/svg+xml" data="favicon.svg" style="height: 1.5em; vertical-align:middle;"></object><span id="i18n-header">PPI 计算器</span></h1>
-            <a href="https://github.com/feeshy/ppi-calc" class="source-link" target="_blank">source code</a>
-        </header>
+    <header>
+        <a href="./en" class="source-link" lang="en">English</a>
+    </header>
+    <main class="container">
+
+        <h1><object type="image/svg+xml" data="favicon.svg" style="height: 1.5em; vertical-align:middle;" aria-hidden="true"></object> <span>PPI 计算器</span></h1>
 
         <!-- 输入区卡片 -->
         <section class="card">
             <div class="input-group">
-                <label for="pixelW" id="i18n-label-w">屏幕宽度</label> <span id="cmW" class="cm-hint"></span>
+                <label for="pixelW">屏幕宽度</label> <span id="cmW" class="cm-hint"></span>
                 <div class="input-control">
                     <div class="input-main">
                         <input id="pixelW" type="number" placeholder="0">
-                        <span class="unit" id="i18n-pixel-w">像素</span>
+                        <span class="unit">像素</span>
                     </div>
                 </div>
             </div>
             <div class="input-group">
-                <label for="pixelH" id="i18n-label-h">屏幕高度</label> <span id="cmH" class="cm-hint"></span>
+                <label for="pixelH">屏幕高度</label> <span id="cmH" class="cm-hint"></span>
                 <div class="input-control">
                     <div class="input-main">
                         <input id="pixelH" type="number" placeholder="0">
-                        <span class="unit" id="i18n-pixel-h">像素</span>
+                        <span class="unit">像素</span>
                     </div>
                 </div>
             </div>
             <div class="input-group">
-                <label for="inchD" id="i18n-label-d">对角长度</label> <span id="cmD" class="cm-hint"></span>
+                <label for="inchD">对角长度</label> <span id="cmD" class="cm-hint"></span>
                 <div class="input-control">
                     <div class="input-main">
                         <input id="inchD" type="number" step="0.1" placeholder="0">
-                        <span class="unit" id="i18n-inch-d">英寸</span>
+                        <span class="unit">英寸</span>
                     </div>
                 </div>
             </div>
             <div class="checkbox-group">
-                <label for="isPenTile" id="i18n-label-pentile" style="margin:0">PenTile 排列</label>
+                <label for="isPenTile" style="margin:0">PenTile 排列</label>
                 <input type="checkbox" id="isPenTile">
             </div>
         </section>
@@ -69,26 +92,26 @@
 
             <!-- 缩放建议部分 -->
             <div id="recommend" class="hidden">
-                <p id="i18n-suggest-title" class="section-title">系统缩放建议</p>
+                <p class="section-title">系统缩放建议</p>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
                                 <th></th>
-                                <th id="i18n-th-larger">更大字号</th>
-                                <th id="i18n-th-current" class="thisDevice hidden">当前</th>
-                                <th id="i18n-th-more">更多内容</th>
+                                <th>更大字号</th>
+                                <th class="thisDevice hidden">当前</th>
+                                <th>更多内容</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="i18n-td-ratio">比例</td>
+                                <td>比例</td>
                                 <td id="scaleFacLgr">___%</td>
                                 <td id="scaleFac" class="thisDevice hidden">___%</td>
                                 <td id="scaleFacMore">___%</td>
                             </tr>
                             <tr>
-                                <td id="i18n-td-res">CSS 分辨率</td>
+                                <td>CSS 分辨率</td>
                                 <td id="resLgr">-</td>
                                 <td id="res" class="thisDevice hidden">-</td>
                                 <td id="resMore">-</td>
@@ -100,12 +123,29 @@
 
             <!-- Office 打印缩放建议 -->
             <div id="officeScale" class="hidden">
-                <p id="i18n-office-title" class="section-title">Office 缩放建议</p>
-                <img src="officeScale.png" loading="lazy" alt="screenshot" onerror="this.style.display='none'">
+                <p class="section-title">Office 缩放建议</p>
+                <img src="officeScale.png" loading="lazy" alt="MS Office 缩放设置参考截图：调整 Office 缩放比实现 1:1 打印预览" onerror="this.style.display='none'">
                 <p id="i18n-office-desc" style="color:var(--text-sec); margin:0;"></p>
             </div>
         </section>
-    </div>
+
+    </main>
+
+    <footer>
+        <a href="https://github.com/feeshy/ppi-calc" target="_blank" rel="noopener" class="source-link">源码</a>
+        <a href="https://feeshy.top" target="_blank" class="source-link">博客</a>
+    </footer>
+
+    <script>
+        window.l10n = {
+            penTileHint: '等效',
+            warnDistance: '建议拉远距离观看',
+            warnUpgrade: '建议升级高分屏',
+            inputHint: '请输入对角尺寸',
+            officeDescWin: '当前系统缩放比例下，将 MS Office 缩放设为 <b style="color:var(--accent)">%s</b>，即可实现 1:1 打印预览。',
+            officeDescMac: '当前系统缩放比例下，将 MS Office 缩放设为 <b style="color:var(--accent)">%s</b>，即可实现 1:1 打印预览。'
+        };
+    </script>
 </body>
 
 </html>

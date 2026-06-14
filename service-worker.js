@@ -5,7 +5,11 @@ const CACHE_NAME = 'ppi-calc-v' + VERSION;
 const ESSENTIAL_FILES = [
   './',
   './index.html',
-  './manifest.json',
+  './en.html',
+  './favicon.svg',
+  './officeScale.png',
+  './app.js',
+  './ppi-calc.js',
   './style.css'
 ];
 

@@ -22,7 +22,7 @@ function calc() {
             document.getElementById("ppi").textContent = Math.round(ppi) + "PPI"
         } else {
             equivPPI = ppi * Math.sqrt(2 / 3)
-            document.getElementById("ppi").innerHTML = Math.round(equivPPI) + "PPI" + `<small style="font-size:1rem; font-weight:normal; color:var(--text-sec)">${lang.penTileHint}</small>`
+            document.getElementById("ppi").innerHTML = Math.round(equivPPI) + "PPI" + `<small style="font-size:1rem; font-weight:normal; color:var(--text-sec)">${window.l10n.penTileHint}</small>`
         }
         document.getElementById("result-card").classList.remove("hidden")
 
@@ -82,10 +82,10 @@ function calc() {
             document.getElementById("recommend").classList.add("hidden")
             switch (true) {          //dpi too low
                 case ppi < 42 && mmShorter >= 450:
-                    document.getElementById("tooLow").innerHTML = lang.warnDistance
+                    document.getElementById("tooLow").innerHTML = window.l10n.warnDistance
                     break
                 case ppi < 85 && mmShorter < 450:
-                    document.getElementById("tooLow").innerHTML = lang.warnUpgrade
+                    document.getElementById("tooLow").innerHTML = window.l10n.warnUpgrade
                     break
                 default:
                     document.getElementById("tooLow").textContent = ""
@@ -104,11 +104,12 @@ function calc() {
             var ua = navigator.userAgent
             switch (true) {
                 case ua.includes('Windows NT'):
-                    document.getElementById("i18n-office-desc").innerHTML = lang.officeDesc(Math.round(scaledPPI / 96 * 100) + "%")
+
+                    document.getElementById("i18n-office-desc").innerHTML = window.l10n.officeDescWin.replace('%s', Math.round(scaledPPI / 96 * 100) + '%')
                     document.getElementById("officeScale").classList.remove("hidden")
                     break
                 case ua.includes('Macintosh'):
-                    document.getElementById("i18n-office-desc").innerHTML = lang.officeDesc(Math.round(scaledPPI / 72 * 100) + "%")
+                    document.getElementById("i18n-office-desc").innerHTML = window.l10n.officeDescMac.replace('%s', Math.round(scaledPPI / 72 * 100) + '%')
                     document.getElementById("officeScale").classList.remove("hidden")
                     break
                 default:
@@ -122,7 +123,7 @@ function calc() {
     } else {          //if diagonal size not set
         document.getElementById("recommend").classList.add("hidden")
         document.getElementById("result-card").classList.add("hidden")
-        document.getElementById("ppi").textContent = lang.inputHint
+        document.getElementById("ppi").textContent = window.l10n.inputHint
     }
 }
 

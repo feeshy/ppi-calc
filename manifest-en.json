@@ -1,6 +1,6 @@
 {
-    "name": "PPI计算器",
-    "short_name": "PPI计算器",
+    "name": "PPI Calc",
+    "short_name": "PPI Calc",
     "icons": [
         {
             "src": "favicon.svg",

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>PPI Calculator - Pixel Density & Scaling</title>
+    <meta property="og:title" content="PPI Calculator" />
+    <meta name="keywords" content="PPI, pixel density, PPI calculator, pixel density calculator, screen resolution, HiDPI, Retina, scaling, PWA">
+    <meta name="description" property="og:description" content="Online PPI calculator: automatically detect screen resolution, input size to calculate pixel density. HiDPI/PenTile scaling suggestions, works offline as a PWA.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="canonical" href="https://ppi.feeshy.top/en" />
+    <link rel="manifest" href="manifest-en.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+    <script src="ppi-calc.js" defer></script>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PPI Calculator",
+        "url": "https://ppi.feeshy.top/en",
+        "description": "Online PPI calculator: detect screen resolution and calculate pixel density with HiDPI scaling suggestions",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript",
+        "offers": { "@type": "Offer", "price": "0" },
+        "inLanguage": "en"
+    }
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <a href="./?lang=zh" class="source-link" lang="zh">中文</a>
+    </header>
+
+    <main class="container">
+        <h1><object type="image/svg+xml" data="favicon.svg" style="height: 1.5em; vertical-align:middle;" aria-hidden="true"></object>&nbsp;<span>PPI Calculator</span></h1>
+
+        <section class="card">
+            <div class="input-group">
+                <label for="pixelW">W</label> <span id="cmW" class="cm-hint"></span>
+                <div class="input-control">
+                    <div class="input-main">
+                        <input id="pixelW" type="number" placeholder="0">
+                        <span class="unit">pixels</span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="pixelH">H</label> <span id="cmH" class="cm-hint"></span>
+                <div class="input-control">
+                    <div class="input-main">
+                        <input id="pixelH" type="number" placeholder="0">
+                        <span class="unit">pixels</span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="inchD">D</label> <span id="cmD" class="cm-hint"></span>
+                <div class="input-control">
+                    <div class="input-main">
+                        <input id="inchD" type="number" step="0.1" placeholder="0">
+                        <span class="unit">inches</span>
+                    </div>
+                </div>
+            </div>
+            <div class="checkbox-group">
+                <label for="isPenTile" style="margin:0">PenTile</label>
+                <input type="checkbox" id="isPenTile">
+            </div>
+        </section>
+
+        <section id="result-card" class="card hidden">
+            <div id="result">
+                <p id="ppi"></p>
+                <div id="tooLow"></div>
+            </div>
+
+            <div id="recommend" class="hidden">
+                <p class="section-title">Scaling Suggestions</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Larger Text</th>
+                                <th class="thisDevice hidden">Current</th>
+                                <th>More Content</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Scale</td>
+                                <td id="scaleFacLgr">___%</td>
+                                <td id="scaleFac" class="thisDevice hidden">___%</td>
+                                <td id="scaleFacMore">___%</td>
+                            </tr>
+                            <tr>
+                                <td>CSS Res</td>
+                                <td id="resLgr">-</td>
+                                <td id="res" class="thisDevice hidden">-</td>
+                                <td id="resMore">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="officeScale" class="hidden">
+                <p class="section-title">Office Scaling</p>
+                <img src="officeScale.png" loading="lazy" alt="MS Office scaling settings screenshot: adjust Office zoom for 1:1 print preview" onerror="this.style.display='none'">
+                <p id="i18n-office-desc" style="color:var(--text-sec); margin:0;"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="https://github.com/feeshy/ppi-calc" target="_blank" rel="noopener" class="source-link">source code</a>
+        <a href="https://feeshy.top" target="_blank" class="source-link">blog</a>
+    </footer>
+
+    <script>
+        window.l10n = {
+            penTileHint: 'Equiv.',
+            warnDistance: 'Increase viewing distance',
+            warnUpgrade: 'Upgrade to High-DPI screen',
+            inputHint: 'Enter diagonal size',
+            officeDescWin: 'Zoom MS Office to <b style="color:var(--accent)">%s</b> for 1:1 print preview at current system scale.',
+            officeDescMac: 'Zoom MS Office to <b style="color:var(--accent)">%s</b> for 1:1 print preview at current system scale.'
+        };
+    </script>
+</body>
+
+</html>
