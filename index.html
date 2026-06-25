@@ -2,29 +2,41 @@
 <html lang="zh" dir="ltr">
 
 <head>
-    <meta charset=utf-8>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#121212">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>PPI计算器 - 像素密度与缩放建议</title>
+
     <script>
         (function () {
             if (location.search.indexOf('lang=zh') !== -1) return;
             if (!navigator.language.startsWith('zh')) {
-                location.href = './en';
+                location.href = './en/';
             }
         })();
     </script>
-    <title>PPI计算器 - 像素密度与缩放建议</title>
-    <meta property="og:title" content="在线PPI计算器" />
+
     <meta name="keywords" content="PPI, 像素密度, 在线PPI计算器, PPI计算公式, 屏幕分辨率, 缩放, HiDPI, 高分屏, PWA">
-    <meta name="description" property="og:description" content="在线PPI计算器：自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度(PPI)。提供HiDPI/PenTile等效换算和系统缩放建议，支持PWA离线运行。">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="在线PPI计算器：自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度(PPI)。提供HiDPI/PenTile等效换算和系统缩放建议，支持PWA离线运行。">
+
+    <link rel="canonical" href="https://ppi.feeshy.top/">
+    <link rel="alternate" hreflang="zh" href="https://ppi.feeshy.top/">
+    <link rel="alternate" hreflang="en" href="https://ppi.feeshy.top/en/">
+    <link rel="alternate" hreflang="x-default" href="https://ppi.feeshy.top/">
+
+    <meta property="og:title" content="PPI计算器 - 像素密度与缩放建议">
+    <meta property="og:description" content="在线PPI计算器：自动获取屏幕分辨率，输入屏幕尺寸即可计算像素密度(PPI)。提供HiDPI/PenTile等效换算和系统缩放建议，支持PWA离线运行。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ppi.feeshy.top/">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="canonical" href="https://ppi.feeshy.top/" />
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
     <script src="ppi-calc.js" defer></script>
-    <!-- Structured Data -->
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -35,7 +47,8 @@
         "applicationCategory": "UtilityApplication",
         "operatingSystem": "All",
         "browserRequirements": "Requires JavaScript",
-        "offers": { "@type": "Offer", "price": "0" }
+        "offers": { "@type": "Offer", "price": "0" },
+        "inLanguage": "zh-CN"
     }
     </script>
 </head>
