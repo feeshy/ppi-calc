@@ -35,6 +35,29 @@ jobs:
         run: |
           BUILD_TIME=$(date +'%Y%m%d%H%M%S')
           sed -i "s/BUILD_TIME_PLACEHOLDER/$BUILD_TIME/g" ./service-worker.js
+      - name: Generate Sitemap
+        run: |
+          LASTMOD=$(date -u +'%Y-%m-%d')
+          cat <<EOF > ./sitemap.xml
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+                  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+            <url>
+              <loc>https://ppi.feeshy.top/</loc>
+              <lastmod>${LASTMOD}</lastmod>
+              <xhtml:link rel="alternate" hreflang="zh" href="https://ppi.feeshy.top/"/>
+              <xhtml:link rel="alternate" hreflang="en" href="https://ppi.feeshy.top/en"/>
+              <xhtml:link rel="alternate" hreflang="x-default" href="https://ppi.feeshy.top/"/>
+            </url>
+            <url>
+              <loc>https://ppi.feeshy.top/en</loc>
+              <lastmod>${LASTMOD}</lastmod>
+              <xhtml:link rel="alternate" hreflang="zh" href="https://ppi.feeshy.top/"/>
+              <xhtml:link rel="alternate" hreflang="en" href="https://ppi.feeshy.top/en"/>
+              <xhtml:link rel="alternate" hreflang="x-default" href="https://ppi.feeshy.top/"/>
+            </url>
+          </urlset>
+          EOF
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
