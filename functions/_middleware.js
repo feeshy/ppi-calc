@@ -3,13 +3,19 @@ export async function onRequest({ request, next }) {
   const userAgent = request.headers.get('User-Agent') || '';
   const pathname = url.pathname;
 
-  // 1. 爬虫判定：如果检测到搜索引擎爬虫，一律不进行任何跳转，以 100% 保证页面收录
+  // 1. 允许 Service Worker 预缓存时绕过重定向，直接获取干净的物理文件
+  if (url.searchParams.has('sw-bypass')) {
+    return await next();
+  }
+
+  // 2. 爬虫判定：如果检测到搜索引擎爬虫，一律不进行任何跳转，以 100% 保证页面收录
   const isBot = /bot|spider|crawl|slurp|lighthouse|chrome-lighthouse|google|baidu|bing|msn|yandex|sogou|exabot|ia_archiver/i.test(userAgent);
   if (isBot) {
     return await next();
   }
 
-  // 2. 首页语言路由：当访问根路径时，检查 Cookie 偏好或 Accept-Language 进行首访分流
+
+  // 2. 首页语言路由：首次访问根路径时根据 Cookie 偏好或 Accept-Language 进行首访分流
   if (pathname === '/' || pathname === '/index.html') {
     const cookieHeader = request.headers.get('Cookie') || '';
     let langPref = null;
@@ -23,19 +29,20 @@ export async function onRequest({ request, next }) {
     }
 
     if (langPref) {
-      // 存在 Cookie 偏好：如果偏好为 en 则重定向；如果是默认 zh 则保持在首页
+      // 存在 Cookie 偏好：偏好 en 则跳转到 /en
       if (langPref === 'en') {
         return Response.redirect(new URL('/en', request.url).toString(), 302);
       }
     } else {
-      // 无 Cookie 偏好：读取 Accept-Language 判定，只要首选语言不是中文（或者缺失语言头），一律跳转到英文版 /en
+      // 无 Cookie：读取 Accept-Language，如果首选语言非中文，跳转到 /en
       const acceptLang = (request.headers.get('Accept-Language') || '').toLowerCase().trim();
-      
       if (!acceptLang.startsWith('zh')) {
         return Response.redirect(new URL('/en', request.url).toString(), 302);
       }
     }
   }
+
+
 
   // 3. 执行后续请求（获取静态资产）
   const response = await next();
