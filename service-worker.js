@@ -38,7 +38,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 3. 运行时策略
+// 3. 运行时策略：缓存优先，后台更新（navigation 请求自动继承 redirect:'manual'，无需手动处理重定向）
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith(self.location.origin)) return;
@@ -46,12 +46,13 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cachedResponse = await cache.match(event.request);
-      const isNavigation = event.request.mode === 'navigate';
 
-      // 缓存命中：直接返回缓存，同时后台异步更新（仅更新干净的 200 响应，丢弃重定向）
+      // 缓存命中：立即返回，后台异步更新
       if (cachedResponse) {
         fetch(event.request).then((resp) => {
-          if (resp && resp.status === 200 && !resp.redirected) {
+          // navigation 请求的 fetch 继承 redirect:'manual'，重定向时 resp 是 opaqueredirect（type!='opaqueredirect' 为 false），不缓存
+          // 只缓存干净的 200 直接响应
+          if (resp.type !== 'opaqueredirect' && resp.ok && !resp.redirected) {
             cache.put(event.request, resp.clone());
           }
         }).catch(() => {});
@@ -61,34 +62,16 @@ self.addEventListener('fetch', (event) => {
       // 缓存未命中：走网络
       try {
         const networkResponse = await fetch(event.request);
-
-        // 干净的 200：缓存并返回
-        if (networkResponse.status === 200 && !networkResponse.redirected) {
+        // 若 Cloudflare 发生重定向，navigation 请求的 fetch 返回 opaqueredirect
+        // 直接将 opaqueredirect 返回给 event.respondWith()，浏览器会自动跟随重定向（URL 也会正确变化）
+        // 无需任何手动处理！
+        if (networkResponse.type !== 'opaqueredirect' && networkResponse.ok && !networkResponse.redirected) {
           cache.put(event.request, networkResponse.clone());
-          return networkResponse;
         }
-
-        // 发生了重定向（如 Cloudflare 首访路由将 / 重定向到 /en）
-        if (networkResponse.redirected && isNavigation) {
-          // 对 navigation 请求不能返回任何 redirected:true 或 3xx 响应（规范禁止）
-          // 用最终落地 URL 再发一次干净请求
-          const cleanResponse = await fetch(networkResponse.url);
-          if (cleanResponse.status === 200 && !cleanResponse.redirected) {
-            cache.put(event.request, cleanResponse.clone());
-            return cleanResponse;
-          }
-          // 两次 fetch 均被重定向，无法获得干净响应，返回任意缓存页面兜底
-          return (await cache.match('./index.html'))
-            || (await cache.match('./en.html'))
-            || new Response('Loading...', { status: 200, headers: { 'Content-Type': 'text/html' } });
-        }
-
-        // 非 navigation 请求的重定向：浏览器可以处理，直接返回
         return networkResponse;
-
       } catch (e) {
-        // 网络不可达（离线）
-        if (isNavigation) {
+        // 网络不可达（离线）：返回缓存兜底
+        if (event.request.mode === 'navigate') {
           return (await cache.match('./index.html'))
             || (await cache.match('./en.html'))
             || new Response('Offline', { status: 503 });
