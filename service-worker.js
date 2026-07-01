@@ -43,9 +43,20 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith(self.location.origin)) return;
 
-  // 如果 URL 包含手动切换参数 lang，直接放行走网络，避免 Service Worker 拦截干扰
   const url = new URL(event.request.url);
-  if (url.searchParams.has('lang')) return;
+  // 离线优先（Offline-First）：手动切换语言 ?lang=... 时，Service Worker 本地直接生成 302 重定向并写入 Cookie，无需发起任何网络请求！
+  if (url.searchParams.has('lang')) {
+    const lang = url.searchParams.get('lang');
+    const redirectUrl = new URL(lang === 'en' ? '/en' : '/', self.location.origin).toString();
+    
+    event.respondWith((async () => {
+      const redirectResponse = Response.redirect(redirectUrl, 302);
+      const newResponse = new Response(redirectResponse.body, redirectResponse);
+      newResponse.headers.set('Set-Cookie', `lang_pref=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`);
+      return newResponse;
+    })());
+    return;
+  }
 
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
