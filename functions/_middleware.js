@@ -15,14 +15,11 @@ export async function onRequest({ request, next }) {
     const cleanUrl = new URL(request.url);
     cleanUrl.searchParams.delete('lang');
     
-    // 返回重定向响应，并在 headers 中写入新的偏好 Cookie
-    return new Response(null, {
-      status: 302,
-      headers: {
-        'Location': cleanUrl.toString(),
-        'Set-Cookie': `lang_pref=${langParam}; Path=/; Max-Age=31536000; SameSite=Lax`
-      }
-    });
+    // 使用 Response.redirect 生成标准重定向响应，并利用 clone 机制追加 Set-Cookie，以避免部分客户端在 null body 下解析 Location 头异常（ERR_INVALID_REDIRECT）
+    const redirectResponse = Response.redirect(cleanUrl.toString(), 302);
+    const newResponse = new Response(redirectResponse.body, redirectResponse);
+    newResponse.headers.set('Set-Cookie', `lang_pref=${langParam}; Path=/; Max-Age=31536000; SameSite=Lax`);
+    return newResponse;
   }
 
   // 3. 首页语言路由：当访问根路径时，检查 Cookie 偏好或 Accept-Language 进行首访分流
