@@ -52,21 +52,12 @@ self.addEventListener('activate', (event) => {
 
 // 3. 语言偏好检测与同步逻辑（防 HTML 内嵌 JS 影响搜索引擎 Bot）
 async function getLangPref() {
-  if (self.cookieStore) {
-    try {
-      const cookie = await self.cookieStore.get('lang_pref');
-      if (cookie) return cookie.value;
-    } catch (e) {}
-  }
   try {
     const cache = await caches.open('settings');
     const resp = await cache.match('/lang_pref');
     if (resp) return await resp.text();
   } catch (e) {}
-  if (navigator.language && navigator.language.startsWith('zh')) {
-    return 'zh';
-  }
-  return 'en';
+  return navigator.language && navigator.language.startsWith('zh') ? 'zh' : 'en';
 }
 
 self.addEventListener('message', (event) => {
