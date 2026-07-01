@@ -43,20 +43,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith(self.location.origin)) return;
 
-  const url = new URL(event.request.url);
-  // 离线优先（Offline-First）：手动切换语言 ?lang=... 时，Service Worker 本地直接生成 302 重定向并写入 Cookie，无需发起任何网络请求！
-  if (url.searchParams.has('lang')) {
-    const lang = url.searchParams.get('lang');
-    const redirectUrl = new URL(lang === 'en' ? '/en' : '/', self.location.origin).toString();
-    
-    event.respondWith((async () => {
-      const redirectResponse = Response.redirect(redirectUrl, 302);
-      const newResponse = new Response(redirectResponse.body, redirectResponse);
-      newResponse.headers.set('Set-Cookie', `lang_pref=${lang}; Path=/; Max-Age=31536000; SameSite=Lax`);
-      return newResponse;
-    })());
-    return;
-  }
+
 
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
@@ -66,7 +53,11 @@ self.addEventListener('fetch', (event) => {
         if (networkResponse) {
           // 如果响应发生了重定向，则返回一个干净的重定向响应，避免 Chrome 报错 (ERR_INVALID_REDIRECT)
           if (networkResponse.redirected) {
-            return Response.redirect(networkResponse.url, 302);
+            // 同样手动构造一个 302 Response，避免使用 Response.redirect() 触发 Chrome 对其 redirected 属性为 true 的报错拦截限制
+            return new Response('', {
+              status: 302,
+              headers: { 'Location': networkResponse.url }
+            });
           }
           if (networkResponse.status === 200) {
             cache.put(event.request, networkResponse.clone());
