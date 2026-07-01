@@ -49,15 +49,17 @@ self.addEventListener('fetch', (event) => {
     caches.open(CACHE_NAME).then(async (cache) => {
       const cachedResponse = await cache.match(event.request);
 
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
+      const fetchPromise = fetch(event.request).then(async (networkResponse) => {
         if (networkResponse) {
-          // 如果响应发生了重定向，则返回一个干净的重定向响应，避免 Chrome 报错 (ERR_INVALID_REDIRECT)
           if (networkResponse.redirected) {
-            // 同样手动构造一个 302 Response，避免使用 Response.redirect() 触发 Chrome 对其 redirected 属性为 true 的报错拦截限制
-            return new Response('', {
-              status: 302,
-              headers: { 'Location': networkResponse.url }
-            });
+            // fetch 已跟随 Cloudflare 首访路由的重定向，networkResponse.url 是最终落地 URL（如 /en）
+            // 不能将 redirected:true 的响应返回给 navigation 请求（规范禁止），也不能返回任何 3xx
+            // 正确做法：直接 re-fetch 最终 URL，拿到干净的 200 响应
+            const cleanResponse = await fetch(networkResponse.url);
+            if (cleanResponse.status === 200) {
+              cache.put(event.request, cleanResponse.clone());
+            }
+            return cleanResponse;
           }
           if (networkResponse.status === 200) {
             cache.put(event.request, networkResponse.clone());
