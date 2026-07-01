@@ -44,11 +44,10 @@ export async function onRequest({ request, next }) {
         return Response.redirect(new URL('/en', request.url).toString(), 302);
       }
     } else {
-      // 无 Cookie 偏好：读取 Accept-Language 并判定是否为非中文用户
+      // 无 Cookie 偏好：读取 Accept-Language 判定，只要首选语言不是中文（或者缺失语言头），一律跳转到英文版 /en
       const acceptLang = (request.headers.get('Accept-Language') || '').toLowerCase().trim();
       
-      // 如果 Accept-Language 存在且不以 'zh' 开头（即非中文用户），则重定向到英文版 /en
-      if (acceptLang && !acceptLang.startsWith('zh')) {
+      if (!acceptLang.startsWith('zh')) {
         return Response.redirect(new URL('/en', request.url).toString(), 302);
       }
     }
