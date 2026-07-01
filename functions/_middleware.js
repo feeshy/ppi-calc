@@ -44,13 +44,11 @@ export async function onRequest({ request, next }) {
         return Response.redirect(new URL('/en', request.url).toString(), 302);
       }
     } else {
-      // 无 Cookie 偏好：读取 Accept-Language 进行判定
-      const acceptLang = request.headers.get('Accept-Language') || '';
-      const zhIndex = acceptLang.indexOf('zh');
-      const enIndex = acceptLang.indexOf('en');
+      // 无 Cookie 偏好：读取 Accept-Language 并判定是否为非中文用户
+      const acceptLang = (request.headers.get('Accept-Language') || '').toLowerCase().trim();
       
-      // 如果 Accept-Language 中 en 的优先级高于 zh，则重定向到 /en
-      if (enIndex !== -1 && (zhIndex === -1 || enIndex < zhIndex)) {
+      // 如果 Accept-Language 存在且不以 'zh' 开头（即非中文用户），则重定向到英文版 /en
+      if (acceptLang && !acceptLang.startsWith('zh')) {
         return Response.redirect(new URL('/en', request.url).toString(), 302);
       }
     }
