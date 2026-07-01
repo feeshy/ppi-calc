@@ -43,13 +43,23 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith(self.location.origin)) return;
 
+  // 如果 URL 包含手动切换参数 lang，直接放行走网络，避免 Service Worker 拦截干扰
+  const url = new URL(event.request.url);
+  if (url.searchParams.has('lang')) return;
+
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cachedResponse = await cache.match(event.request);
 
       const fetchPromise = fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          cache.put(event.request, networkResponse.clone());
+        if (networkResponse) {
+          // 如果响应发生了重定向，则返回一个干净的重定向响应，避免 Chrome 报错 (ERR_INVALID_REDIRECT)
+          if (networkResponse.redirected) {
+            return Response.redirect(networkResponse.url, 302);
+          }
+          if (networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone());
+          }
         }
         return networkResponse;
       }).catch(() => { });
